@@ -1,2 +1,4 @@
-# Collider Optimization Unity
- Optimizes & Simplifies mesh and polygon colliders in Unity
+# Unity Collider Optimizer
+Optimizes Mesh & Polygon colliders in Unity.
+
+
