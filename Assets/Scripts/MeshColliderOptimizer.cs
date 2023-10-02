@@ -31,10 +31,6 @@ public class MeshColliderOptimizer : MonoBehaviour
    
     public void SimplifyMeshCollider(MeshProperties mp)
     {
-        //Stopwatch stopwatch = new Stopwatch();
-
-        //stopwatch.Start();
-
         int edgesToContract = (int)(mp.optimizationFactor * 25f);
 
         if (mCollider == null)
@@ -44,50 +40,23 @@ public class MeshColliderOptimizer : MonoBehaviour
         {
             mCollider.sharedMesh = initMesh;
             return;
-        }
-        
-        //stopwatch.Stop();
-        //print("Time taken for init: " + stopwatch.ElapsedMilliseconds + "ms");
-        //stopwatch.Start();
-
+        }      
 
         Mesh meshToSimplify = initMesh;
-        MyMesh myMeshToSimplify = new MyMesh(meshToSimplify);
-
-        //stopwatch.Stop();
-        //print("Time taken for MyMesh: " + stopwatch.ElapsedMilliseconds + "ms");
-        //stopwatch.Start();
+        MyMesh myMeshToSimplify = new MyMesh(meshToSimplify);       
 
         Normalizer3 normalizer = new Normalizer3(myMeshToSimplify.vertices);
-        myMeshToSimplify.vertices = normalizer.Normalize(myMeshToSimplify.vertices);
+        myMeshToSimplify.vertices = normalizer.Normalize(myMeshToSimplify.vertices);       
 
-        //stopwatch.Stop();
-        //print("Time taken for Normalizer3: " + stopwatch.ElapsedMilliseconds + "ms");
-        //stopwatch.Start();
-
-        HalfEdgeData3 myMeshToSimplify_HalfEdge = new HalfEdgeData3(myMeshToSimplify, mp.connectingMode);
-        //stopwatch.Stop();
-        //print("Time taken for halfedge3: " + stopwatch.ElapsedMilliseconds + "ms");
-        //stopwatch.Start();
+        HalfEdgeData3 myMeshToSimplify_HalfEdge = new HalfEdgeData3(myMeshToSimplify, mp.connectingMode);        
         HalfEdgeData3 mySimplifiedMesh_HalfEdge = MeshSimplification_QEM.Simplify(myMeshToSimplify_HalfEdge, maxEdgesToContract: edgesToContract, maxError: Mathf.Infinity, normalizeTriangles: true);
-        //stopwatch.Stop();
-        //print("Time taken for QEM: " + stopwatch.ElapsedMilliseconds + "ms");
-        //stopwatch.Start();
+        
         MyMesh mySimplifiedMesh = mySimplifiedMesh_HalfEdge.ConvertToMyMesh("Simplified Mesh", mp.meshStyle);
-        //stopwatch.Stop();
-        //print("Time taken for Converstion p1: " + stopwatch.ElapsedMilliseconds + "ms");
-        //stopwatch.Start();
         mySimplifiedMesh.vertices = normalizer.UnNormalize(mySimplifiedMesh.vertices);
-        //stopwatch.Stop();
-        //print("Time taken for Converstion p2: " + stopwatch.ElapsedMilliseconds + "ms");
-        //stopwatch.Start();
         mySimplifiedMesh.vertices = mySimplifiedMesh.vertices.Select(x => x.ToVector3().ToMyVector3()).ToList();
-        //stopwatch.Stop();
-        //print("Time taken for Converstion p3: " + stopwatch.ElapsedMilliseconds + "ms");
-        //stopwatch.Start();
+
         Mesh unitySimplifiedMesh = mySimplifiedMesh.ConvertToUnityMesh(generateNormals: true, meshName: "Simplified Collider");
-        //stopwatch.Stop();
-        //print("Time taken for Converstion p4: " + stopwatch.ElapsedMilliseconds + "ms");
+
         mCollider.sharedMesh = unitySimplifiedMesh;
     }
     public void Reset()
