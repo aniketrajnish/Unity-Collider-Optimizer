@@ -21,7 +21,7 @@ You can run this test on your machine by cloning the project and going to the `P
 #### Usage
 * Download the `collideroptimizationpackage_2d_v003.unitypackage` package from the [Releases](https://github.com/aniketrajnish/Unity-Collider-Optimizer/releases/).
 * Import all the assets from the package in your unity project.
-* Attach the `PolygonColliderOptimizer.cs` scrpit on your 2D sprite.
+* Attach the `PolygonColliderOptimizer.cs` script on your 2D sprite.
 * Adjust the `optimizationFactor` to control the amount of optimzation you need. 
 
 https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/74f5bdd1-f5c8-4c44-b745-78211919aae3
@@ -45,7 +45,7 @@ You can run this test on your machine by cloning the project and going to the `M
 #### Usage
 * Download the `collideroptimizationpackage_3d_v003.unitypackage` package from the [Releases](https://github.com/aniketrajnish/Unity-Collider-Optimizer/releases/).
 * Import all the assets from the package in your unity project.
-* Attach the `MeshColliderOptimizer.cs` scrpit on your 2D sprite.
+* Attach the `MeshColliderOptimizer.cs` script on your 2D sprite.
 * Choose the connecting mode between _Fast, Precise, and No._
 * Adjust the `optimizationFactor` to control the amount of optimzation you need.
 * Choose the mesh style to be _Soft, Hard or both_.
