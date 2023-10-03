@@ -55,7 +55,7 @@ https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/ddb08b
 
 ## Updates
 #### v004
-* Added the functionality to save the optimized colliders.
+* Added the functionality to save and load the optimized colliders as assets.
 * Fixed the refresh bug.
   
 https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/ba42c61c-4ea1-419d-bf81-324304a218b8
