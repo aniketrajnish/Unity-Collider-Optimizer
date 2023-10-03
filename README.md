@@ -65,7 +65,7 @@ Contributions to the project are welcome. Currently working on converting the QE
 
 ## Known Bugs
 * ~~If a prefab is made out of a gameobject having Polygon Collider Optimizer, it keeps refreshing itself.~~ **[FIXED]**
-* Choosing Hard Edge Mesh Style decreases the number of triangles of mesh but increments the vertices (doesn't affect the performance).
+* Choosing Hard Edge Mesh Style decreases the number of triangles but induces additional vertices (doesn't affect the performance).
 
 ## License
 MIT License
