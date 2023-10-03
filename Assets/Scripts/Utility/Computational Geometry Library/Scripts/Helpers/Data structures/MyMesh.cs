@@ -19,9 +19,9 @@ namespace Habrador_Computational_Geometry
         //Hard edges only, etc...
         public enum MeshStyle
         {
+            HardAndSoftEdges,
             HardEdges,
-            SoftEdges,
-            HardAndSoftEdges
+            SoftEdges            
         }
 
 
