@@ -2,7 +2,9 @@ using UnityEngine;
 using Habrador_Computational_Geometry;
 using System.Linq;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Diagnostics;
 
 [RequireComponent(typeof(MeshCollider))]
@@ -70,6 +72,8 @@ public class MeshColliderOptimizer : MonoBehaviour
 
         mCollider.sharedMesh = initMesh;
     }
+
+#if UNITY_EDITOR
     public void SaveOptimizedCollider()
     {
         if (mCollider.sharedMesh != null)
@@ -97,4 +101,5 @@ public class MeshColliderOptimizer : MonoBehaviour
 
         mCollider.sharedMesh = mesh;
     }
+#endif
 }

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 [RequireComponent(typeof(PolygonCollider2D))]
 [ExecuteInEditMode]
@@ -53,6 +55,7 @@ public class PolygonColliderOptimizer : MonoBehaviour
     {
         OptimizePolygonCollider(0);
     }
+#if UNITY_EDITOR
     public void SaveOptimizedPath()
     {
         string path = EditorUtility.SaveFilePanelInProject("Save Optimized Path", "OptimizedPath", "asset", "Enter the filename for Optimized path:");
@@ -87,5 +90,6 @@ public class PolygonColliderOptimizer : MonoBehaviour
             pCollider.SetPath(i, pathData.paths[i].ToArray());
         
     }
+#endif
 }
 
