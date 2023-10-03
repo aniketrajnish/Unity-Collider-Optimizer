@@ -53,7 +53,7 @@ You can run this test on your machine by cloning the project and going to the `M
 
 https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/ddb08b48-d241-494c-a6f4-0a822424964a
 
-## Update
+## Updates
 #### v004
 * Added the functionality to save the optimized colliders.
 * Fixed the refresh bug.
