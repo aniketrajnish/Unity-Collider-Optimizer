@@ -53,11 +53,18 @@ You can run this test on your machine by cloning the project and going to the `M
 
 https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/ddb08b48-d241-494c-a6f4-0a822424964a
 
+## Update
+#### v004
+* Added the functionality to save the optimized colliders.
+* Fixed the refresh bug.
+  
+https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/ba42c61c-4ea1-419d-bf81-324304a218b8
+
 ## Contribution
 Contributions to the project are welcome. Currently working on converting the QEM algorithm to a couroutine to stop the main Unity thread from freezing.
 
 ## Known Bugs
-If a prefab is made out of a gameobject having Polygon Collider Optimizer, it keeps refreshing itself.
+~~If a prefab is made out of a gameobject having Polygon Collider Optimizer, it keeps refreshing itself.~~ **[FIXED]**
 
 ## License
 MIT License
