@@ -1,7 +1,7 @@
 using UnityEngine;
 using Habrador_Computational_Geometry;
 using System.Linq;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using System.Diagnostics;
 
@@ -13,6 +13,7 @@ public class MeshColliderOptimizer : MonoBehaviour
     private Mesh initMesh;
     private MeshCollider mCollider;
     public MeshProperties mp;
+    [HideInInspector] public Mesh savedMesh;
     public struct MeshProperties
     {
         public HalfEdgeData3.ConnectOppositeEdges connectingMode;
@@ -68,5 +69,32 @@ public class MeshColliderOptimizer : MonoBehaviour
             mCollider = GetComponent<MeshCollider>();
 
         mCollider.sharedMesh = initMesh;
+    }
+    public void SaveOptimizedCollider()
+    {
+        if (mCollider.sharedMesh != null)
+        {
+            string path = EditorUtility.SaveFilePanelInProject("Save Optimized Collider", "OptimizedCollider", "asset", "Enter the filename for Optimized Collider:");
+            if (!string.IsNullOrEmpty(path))
+            {
+                AssetDatabase.CreateAsset(mCollider.sharedMesh, path);
+                AssetDatabase.SaveAssets();
+            }
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("Need an Optimized Collider bauss :3");
+        }
+    }
+
+    public void LoadSavedMesh(Mesh mesh)
+    {
+        if (mesh == null || mCollider == null)
+        {
+            UnityEngine.Debug.LogWarning("Add a path first bauss :3");
+            return;
+        }
+
+        mCollider.sharedMesh = mesh;
     }
 }

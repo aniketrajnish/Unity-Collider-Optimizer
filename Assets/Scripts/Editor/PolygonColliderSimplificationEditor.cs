@@ -13,6 +13,8 @@ public class PolygonColliderOptimizerEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        EditorGUILayout.LabelField("Optimize Collider", EditorStyles.boldLabel);
+
         base.OnInspectorGUI();
 
         float tolerance = pco.optimizationFactor / 50f;
@@ -27,8 +29,21 @@ public class PolygonColliderOptimizerEditor : Editor
 
         GUILayout.EndHorizontal();
 
-        EditorUtility.SetDirty(target);
-       
+        if (GUILayout.Button("Save Optimized Path"))
+        {
+            pco.SaveOptimizedPath();
+        }
+
+        EditorGUILayout.Space();
+
+        EditorGUILayout.LabelField("Load Saved Collider Data", EditorStyles.boldLabel);        
+
+        pco.savedPathData = (OptimizedPathData)EditorGUILayout.ObjectField("Saved Path", pco.savedPathData, typeof(OptimizedPathData), false);
+
+        if (GUILayout.Button("Load Saved Path"))
+        {
+            pco.LoadSavedPath(pco.savedPathData);
+        }
     }    
 }
 #endif
