@@ -19,7 +19,7 @@ https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/e134f0
 You can run this test on your machine by cloning the project and going to the `Polygon Collider Optimization Test` scene in Unity.
 
 #### Usage
-* Download the `collideroptimizationpackage_2d_v003.unitypackage` package from the [Releases](https://github.com/aniketrajnish/Unity-Collider-Optimizer/releases/).
+* Download the `collideroptimizationpackage_2d_v004.unitypackage` package from the [Releases](https://github.com/aniketrajnish/Unity-Collider-Optimizer/releases/).
 * Import all the assets from the package in your unity project.
 * Attach the `PolygonColliderOptimizer.cs` script on your 2D sprite.
 * Adjust the `optimizationFactor` to control the amount of optimzation you need. 
@@ -43,7 +43,7 @@ https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/cfba78
 You can run this test on your machine by cloning the project and going to the `Mesh Collider Optimization Test` scene in Unity.
 
 #### Usage
-* Download the `collideroptimizationpackage_3d_v003.unitypackage` package from the [Releases](https://github.com/aniketrajnish/Unity-Collider-Optimizer/releases/).
+* Download the `collideroptimizationpackage_3d_v004.unitypackage` package from the [Releases](https://github.com/aniketrajnish/Unity-Collider-Optimizer/releases/).
 * Import all the assets from the package in your unity project.
 * Attach the `MeshColliderOptimizer.cs` script on your 2D sprite.
 * Choose the connecting mode between _Fast, Precise, and No._
@@ -53,11 +53,18 @@ You can run this test on your machine by cloning the project and going to the `M
 
 https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/ddb08b48-d241-494c-a6f4-0a822424964a
 
+## Updates
+#### v004
+* Added the functionality to save and load the optimized colliders as assets.
+* Fixed the refresh bug.
+  
+https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/ba42c61c-4ea1-419d-bf81-324304a218b8
+
 ## Contribution
 Contributions to the project are welcome. Currently working on converting the QEM algorithm to a couroutine to stop the main Unity thread from freezing.
 
 ## Known Bugs
-If a prefab is made out of a gameobject having Polygon Collider Optimizer, it keeps refreshing itself.
+~~If a prefab is made out of a gameobject having Polygon Collider Optimizer, it keeps refreshing itself.~~ **[FIXED]**
 
 ## License
 MIT License
