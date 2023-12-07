@@ -34,7 +34,7 @@ https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/74f5bd
 |**Triangles Count**| *9132 tris* | *2416 tris* |
 
 
-The tool uses the [Computational Geometry Unity Library](https://github.com/Habrador/Computational-geometry) by Erik Nordeus 🐐 to perfrom the Quadric Error Metric simplification on the shared mesh of the mesh collider.
+The tool uses the [Computational Geometry Unity Library](https://github.com/Habrador/Computational-geometry) by Erik Nordeus 🐐 to perfrom the Quadric Error Metrics simplification on the shared mesh of the mesh collider.
 
 #### Performance Comparision
 
