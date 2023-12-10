@@ -12,7 +12,7 @@ Optimizes Mesh & Polygon colliders in Unity.
 
 The tool uses a [C# implementation](https://www.codeproject.com/Articles/18936/A-C-Implementation-of-Douglas-Peucker-Line-Appro) of the Ramer Douglas Peucker Algorithm to smooth the polylines and reduce the number of paths created by a Polygon Collider in Unity.
 
-#### Performance Comparision
+#### Performance Comparison
 
 https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/e134f0c6-4c08-4552-b69f-22e7f3b61ebe
 
@@ -36,7 +36,7 @@ https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/74f5bd
 
 The tool uses the [Computational Geometry Unity Library](https://github.com/Habrador/Computational-geometry) by Erik Nordeus 🐐 to perfrom the Quadric Error Metrics simplification on the shared mesh of the mesh collider.
 
-#### Performance Comparision
+#### Performance Comparison
 
 https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/cfba7837-a81e-4891-9594-501fbf31680f
 
@@ -61,7 +61,7 @@ https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/ddb08b
 https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/ba42c61c-4ea1-419d-bf81-324304a218b8
 
 ## Contribution
-Contributions to the project are welcome. Currently working on converting the QEM algorithm to a couroutine to stop the main Unity thread from freezing.
+Contributions to the project are welcome. Currently working on converting the QEM algorithm to a coroutine to stop the main Unity thread from freezing.
 
 ## Known Bugs
 * ~~If a prefab is made out of a gameobject having Polygon Collider Optimizer, it keeps refreshing itself.~~ **[FIXED]**
