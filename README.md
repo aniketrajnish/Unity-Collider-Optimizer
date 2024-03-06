@@ -2,6 +2,8 @@
 
 Optimizes Mesh & Polygon colliders in Unity.
 
+![placeholder_uco](https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/c68a1afb-6501-40c2-a9ac-f7fefd83fed7)
+
 ## Polygon Collider Optimizer
 
 | ![PCO_V1](https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/62a658c3-487c-4d80-b303-b96a74804a99) | ![PCO_V2](https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/cc114920-5bcd-4f06-81ad-9df9a176055d) | ![PCO_V3](https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/dfd8c63e-11ed-4a74-a2e1-45e2829f017e) |
