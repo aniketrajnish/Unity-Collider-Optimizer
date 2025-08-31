@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace UnityColliderOptimizer.Core
 {
-    [CreateAssetMenu(menuName = "ColliderOptimizer/Global Settings", fileName = "ColliderOptimizerSettings")]
+    [CreateAssetMenu(menuName = "ColliderOptimizer/Settings", fileName = "ColliderOptimizerSettings")]
     public class OptimizationSettings : ScriptableObject
     {
         public MeshOptParams DefaultMOP = new MeshOptParams();
