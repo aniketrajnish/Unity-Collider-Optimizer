@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System.Linq;
+using Codice.Client.BaseCommands.Changelist;
 using UnityColliderOptimizer.Core;
 using UnityColliderOptimizer.Core.P;
 using UnityColliderOptimizer.Services;
@@ -10,66 +11,91 @@ namespace UnityColliderOptimizer.E
 {
     public class BaseColliderOptimizerEditor<T> : Editor where T : Object, IColliderOptimizer
     {
-        protected IAssetPersistence _persistance;
-        protected virtual void OnEnable() => _persistance = new AssetPersistenceEditor();
-
+        protected IAssetPersistence _persistence;
+        protected virtual void OnEnable() => _persistence = new IAssetPersistenceEditor();
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Collider Optimization", EditorStyles.boldLabel);
+            var row = EditorGUILayout.GetControlRect(false, EditorGUIUtility.singleLineHeight + 4f);
+            const int cols = 4;
+            const float gap = 4f;
+            float w = (row.width - gap * (cols - 1)) / cols;
+            float h = row.height;
 
-            using (new EditorGUILayout.HorizontalScope())
+            var rOptimize = new Rect(row.x, row.y, w, h);
+            var rReset = new Rect(rOptimize.xMax + gap, row.y, w, h);
+            var rSave = new Rect(rReset.xMax + gap, row.y, w, h);
+            var rLoad = new Rect(rSave.xMax + gap, row.y, w, h);
+
+            if (GUI.Button(rOptimize, "Optimize"))
             {
-                if (GUILayout.Button("Optimize"))
+                foreach (var o in targets.Cast<T>())
                 {
-                    foreach (var o in targets.Cast<T>())
-                    {
-                        Undo.RecordObject((Object)o, "Optimize");
-                        o.Optimize();
-                        EditorUtility.SetDirty((Object)o);
-                    }
+                    Undo.RecordObject((Object)o, "Optimize");
+                    o.Optimize();
+                    EditorUtility.SetDirty((Object)o);
                 }
+            }
 
-                if (GUILayout.Button("Reset"))
+            if (GUI.Button(rReset, "Reset"))
+            {
+                foreach (var o in targets.Cast<T>())
                 {
-                    foreach (var o in targets.Cast<T>())
+                    Undo.RecordObject((Object)o, "Reset");
+                    o.Reset();
+                    EditorUtility.SetDirty((Object)o);
+                }
+            }
+
+            if (GUI.Button(rSave, "Save"))
+            {
+                foreach (var o in targets.Cast<T>())
+                {
+                    var comp = o as Component;
+                    if (!comp) continue;
+
+                    var mc = comp.GetComponent<MeshCollider>();
+                    if (mc != null && mc.sharedMesh != null)
                     {
-                        Undo.RecordObject((Object)o, "Reset");
-                        o.Reset();
-                        EditorUtility.SetDirty((Object)o);
+                        _persistence.SaveMeshAsset(mc.sharedMesh, comp.name + "_CollMesh");
+                        continue;
+                    }
+
+                    var pc = comp.GetComponent<PolygonCollider2D>();
+                    if (pc != null)
+                    {
+                        var data = CreateInstance<PathData>();
+                        var paths = new System.Collections.Generic.List<Path2D>(pc.pathCount);
+                        for (int i = 0; i < pc.pathCount; i++)
+                        {
+                            paths.Add(new Path2D { Pts = pc.GetPath(i) });
+                        }
+                        data.Paths = paths;
+                        _persistence.SavePathDataAsset(data, comp.name + "_CollPaths");
                     }
                 }
             }
 
-            using (new EditorGUILayout.HorizontalScope())
+            if (GUI.Button(rLoad, "Load"))
+                EditorGUIUtility.ShowObjectPicker<Object>(null, false, "", 0);
+
+            if (Event.current.commandName == "ObjectSelectorClosed")
             {
-                if (GUILayout.Button("Capture Base"))
+                var picked = EditorGUIUtility.GetObjectPickerObject();
+                if (picked != null)
                 {
                     foreach (var o in targets.Cast<T>())
                     {
-                        Undo.RecordObject((Object)o, "Capture Base");
-                        o.Capture();
+                        Undo.RecordObject((Object)o, "Load Collider");
+                        o.LoadSaved(picked);
                         EditorUtility.SetDirty((Object)o);
                     }
                 }
-
-                if (GUILayout.Button("Save Result"))
-                {
-                    foreach (var o in targets.Cast<T>())
-                    {
-                        var saved = o.GetSaved();
-                        if (saved == null) continue;
-
-                        if (saved is Mesh m)
-                            _persistance.SaveMeshAsset(m, "OptimizedCollider");
-                        else if (saved is OptimizedPathData pd)
-                            _persistance.SavePathDataAsset(pd, "OptimizedPath");
-                    }
-                }
+                Repaint();
             }
         }
+
     }
 }
 #endif
