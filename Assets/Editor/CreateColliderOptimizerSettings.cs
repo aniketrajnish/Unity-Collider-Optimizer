@@ -1,4 +1,3 @@
-// Editor helper (new file): Assets/Editor/CreateColliderOptimizerSettings.cs
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
@@ -10,15 +9,23 @@ namespace UnityColliderOptimizer.E
         [MenuItem("Tools/Collider Optimizer/Create Settings Asset")]
         public static void Create()
         {
-            var dir = "Assets/Resources";
+            const string dir = "Assets/Resources";
             if (!AssetDatabase.IsValidFolder(dir)) AssetDatabase.CreateFolder("Assets", "Resources");
+
             var path = $"{dir}/ColliderOptimizerSettings.asset";
             var existing = AssetDatabase.LoadAssetAtPath<OptimizationSettings>(path);
-            if (existing) { EditorGUIUtility.PingObject(existing); return; }
+            if (existing)
+            {
+                EditorGUIUtility.PingObject(existing);
+                Selection.activeObject = existing;
+                return;
+            }
+
             var inst = ScriptableObject.CreateInstance<OptimizationSettings>();
             AssetDatabase.CreateAsset(inst, path);
             AssetDatabase.SaveAssets();
             EditorGUIUtility.PingObject(inst);
+            Selection.activeObject = inst;
         }
     }
 }
