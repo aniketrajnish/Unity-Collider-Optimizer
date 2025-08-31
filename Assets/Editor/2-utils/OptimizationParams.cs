@@ -1,12 +1,13 @@
+#if UNITY_EDITOR
 using UnityEngine;
 
-namespace UnityColliderOptimizer.Core
+namespace UnityColliderOptimizer.Utils
 {
     public enum ToleranceMode { World, Relative }
     [System.Serializable]
     public class MeshOptParams
     {
-        [Range(0f, 1f)] public float ContractionFactor = .25f; 
+        [Range(0f, 1f)] public float ContractionFactor = .25f;
         public bool RecalcNormals = true;
         public bool BakeScale = true;
         public bool Convex = false;
@@ -23,3 +24,4 @@ namespace UnityColliderOptimizer.Core
         public bool PerPathScaleByBounds = false;
     }
 }
+#endif
