@@ -10,7 +10,7 @@ namespace UnityColliderOptimizer.Gltfpack
     public static class MeshSimplifyGateway
     {
         public static Mesh SimplifyWithGltfpack(Mesh __src, float __keepRatio, bool __recalcNormals,
-                                                string __saveDir = "Assets/ColliderOptimizer/Simplified")
+                                                string __saveDir = "Assets/Editor/6-simplified-out")
         {
             if (!__src) return null;
             __keepRatio = Mathf.Clamp01(__keepRatio);
