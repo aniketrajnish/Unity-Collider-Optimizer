@@ -5,7 +5,7 @@ using UnityColliderOptimizer.Services;
 using UnityColliderOptimizer.Core.P;
 namespace UnityColliderOptimizer.E
 {
-    public class AssetPersistenceEditor : IAssetPersistence
+    public class IAssetPersistenceEditor : IAssetPersistence
     {
         public bool SaveMeshAsset(Mesh mesh, string __name)
         {
@@ -17,7 +17,7 @@ namespace UnityColliderOptimizer.E
             EditorGUIUtility.PingObject(clone);
             return true;
         }
-        public bool SavePathDataAsset(OptimizedPathData data, string __name)
+        public bool SavePathDataAsset(PathData data, string __name)
         {
             var path = EditorUtility.SaveFilePanelInProject("Save Path Data", __name, "asset", "Pick a location");
             if (string.IsNullOrEmpty(path)) return false;
