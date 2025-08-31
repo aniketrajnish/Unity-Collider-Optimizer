@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnityColliderOptimizer.Utils
+namespace ColliderOptimizer.Utils
 {
     public static class DPR
     {

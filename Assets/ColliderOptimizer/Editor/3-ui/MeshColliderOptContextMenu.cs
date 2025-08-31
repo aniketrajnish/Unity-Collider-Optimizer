@@ -1,9 +1,9 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using UnityColliderOptimizer.Gltfpack;
-using UnityColliderOptimizer.Utils;
-namespace UnityColliderOptimizer.UI
+using ColliderOptimizer.Gltfpack;
+using ColliderOptimizer.Utils;
+namespace ColliderOptimizer.UI
 {
     static class MeshColliderOptContextMenu
     {
@@ -36,7 +36,7 @@ namespace UnityColliderOptimizer.UI
             try
             {
                 simplified = MeshSimplifyGateway.SimplifyWithGltfpack(
-                    bakedOrSrc, keep, MeshDefaults.RecalcNormals, "Assets/Editor/4-simplified");
+                    bakedOrSrc, keep, MeshDefaults.RecalcNormals, "Assets/ColliderOptimizer/Editor/4-opt-out");
             }
             finally
             {

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using UnityEngine;
 
-namespace UnityColliderOptimizer.Utils
+namespace ColliderOptimizer.Utils
 {
     static class ObjExporter
     {
