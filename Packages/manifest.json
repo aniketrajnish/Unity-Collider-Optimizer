@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unity.cloud.gltfast": "6.13.1",
     "com.unity.collab-proxy": "2.6.0",
     "com.unity.feature.development": "1.0.2",
     "com.unity.multiplayer.center": "1.0.0",

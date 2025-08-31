@@ -1,0 +1,21 @@
+Third-Party Notices
+===================
+
+This package uses third-party software:
+
+1) meshoptimizer (MIT)
+   Repository: https://github.com/zeux/meshoptimizer
+   Copyright:
+     2016–2025, Arseny Kapoulkine
+   License:
+     See Assets/ColliderOptimizer/ThirdPartyLicenses/meshoptimizer_LICENSE.txt
+   Recommended attribution (from project readme):
+     “Uses meshoptimizer. Copyright (c) 2016–2025, Arseny Kapoulkine”
+
+2) glTFast (Apache-2.0) — only required if your users install it via Unity Package Manager
+   Package name: com.unity.cloud.gltfast
+   Repository: https://github.com/atteneder/glTFast
+   License Text: https://www.apache.org/licenses/LICENSE-2.0.txt
+   Notes:
+     We do not redistribute glTFast in this .unitypackage by default. If you choose to bundle
+     its code, you must include its Apache-2.0 LICENSE and any NOTICE file as required.
