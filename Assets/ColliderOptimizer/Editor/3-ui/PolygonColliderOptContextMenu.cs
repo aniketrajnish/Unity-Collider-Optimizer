@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityColliderOptimizer.Utils;
-namespace UnityColliderOptimizer.UI
+using ColliderOptimizer.Utils;
+namespace ColliderOptimizer.UI
 {
     static class PolygonColliderOptContextMenu
     {

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 
-namespace UnityColliderOptimizer.Gltfpack
+namespace ColliderOptimizer.Gltfpack
 {
     static class GltfpackRunner
     {

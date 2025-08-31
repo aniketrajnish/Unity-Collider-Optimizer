@@ -3,14 +3,14 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityColliderOptimizer.Utils;
+using ColliderOptimizer.Utils;
 
-namespace UnityColliderOptimizer.Gltfpack
+namespace ColliderOptimizer.Gltfpack
 {
     public static class MeshSimplifyGateway
     {
         public static Mesh SimplifyWithGltfpack(Mesh __src, float __keepRatio, bool __recalcNormals,
-                                                string __saveDir = "Assets/Editor/6-simplified-out")
+                                                string __saveDir = "Assets/ColliderOptimizer/Editor/4-opt-out")
         {
             if (!__src) return null;
             __keepRatio = Mathf.Clamp01(__keepRatio);
