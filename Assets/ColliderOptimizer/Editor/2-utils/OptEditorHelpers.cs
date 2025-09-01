@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ColliderOptimizer.Utils
 {
-    public static class ColliderOptEditorUtils
+    public static class OptEditorHelpers
     {
         public static T LoadAssetViaPanel<T>(string __title, string __ext) where T : Object
         {
@@ -15,8 +15,8 @@ namespace ColliderOptimizer.Utils
             sysPath = sysPath.Replace('\\', '/');
             if (!sysPath.StartsWith(dataPath))
             {
-                EditorUtility.DisplayDialog("Invalid selection",
-                    "Pick an asset inside this project (under Assets/).", "OK");
+                EditorUtility.DisplayDialog("invalid selection",
+                    "pick an asset under Assets/", "OK");
                 return null;
             }
             var rel = "Assets" + sysPath.Substring(dataPath.Length);

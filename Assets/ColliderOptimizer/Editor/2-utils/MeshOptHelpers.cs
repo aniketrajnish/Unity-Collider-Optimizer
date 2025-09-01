@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using UnityEngine;
+using ColliderOptimizer.Core;
 
 namespace ColliderOptimizer.Utils
 {
@@ -13,7 +14,7 @@ namespace ColliderOptimizer.Utils
             for (int i = 0; i < v.Length; i++) v[i] = Vector3.Scale(v[i], __s);
             c.vertices = v; c.RecalculateBounds(); return c;
         }
-        public static void ResetMeshTo(MeshCollider __mc, Mesh __src, MeshOptParams __p)
+        public static void ResetMesh(MeshCollider __mc, Mesh __src, MeshOptParams __p)
         {
             __mc.sharedMesh = null;
 #if UNITY_2020_2_OR_NEWER

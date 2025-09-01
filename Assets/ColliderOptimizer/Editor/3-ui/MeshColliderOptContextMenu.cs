@@ -3,40 +3,38 @@ using UnityEditor;
 using UnityEngine;
 using ColliderOptimizer.Gltfpack;
 using ColliderOptimizer.Utils;
+using ColliderOptimizer.Core;
+
 namespace ColliderOptimizer.UI
 {
     static class MeshColliderOptContextMenu
     {
         const int K_PRIO = 5050;
-        static MeshOptParams MeshDefaults => new MeshOptParams
-        {
-            ContractionFactor = 0.25f,
-            RecalcNormals = true,
-            BakeScale = true,
-            Convex = false
-        };
+
         [MenuItem("CONTEXT/MeshCollider/Optimize Collider", false, K_PRIO + 0)]
-        static void Optimize(MenuCommand cmd)
+        static void Optimize(MenuCommand __cmd)
         {
-            var mc = (MeshCollider)cmd.context;
+            var mc = (MeshCollider)__cmd.context;
             var go = mc.gameObject;
             var mf = go.GetComponent<MeshFilter>();
-            var src = mf && mf.sharedMesh ? mf.sharedMesh : mc.sharedMesh;
-            if (!src) { Debug.LogWarning("No source mesh found."); return; }
-
+            var src = (mf && mf.sharedMesh) ? mf.sharedMesh : mc.sharedMesh;
+            if (!src) { Debug.LogWarning("no source mesh found"); return; }
+            var p = OptSettings.MeshParams;
             Undo.RecordObject(mc, "Optimize MeshCollider");
-            MeshOptHelpers.ResetMeshTo(mc, src, MeshDefaults);
-
-            float keep = 1f - Mathf.Clamp01(MeshDefaults.ContractionFactor);
-            var bakedOrSrc = (MeshDefaults.BakeScale && go.transform.lossyScale != Vector3.one)
-                ? MeshOptHelpers.BakeScaledCopy(src, go.transform.lossyScale)
+            MeshOptHelpers.ResetMesh(mc, src, p);
+            float keep = 1f - Mathf.Clamp01(p.ContractionFactor);
+            var chosenScale = (p.LossyScale != Vector3.one) ? p.LossyScale : go.transform.lossyScale;
+            var bakedOrSrc = (p.BakeScale && chosenScale != Vector3.one)
+                ? MeshOptHelpers.BakeScaledCopy(src, chosenScale)
                 : src;
 
             Mesh simplified = null;
             try
             {
                 simplified = MeshSimplifyGateway.SimplifyWithGltfpack(
-                    bakedOrSrc, keep, MeshDefaults.RecalcNormals, "Assets/ColliderOptimizer/Editor/4-opt-out");
+                    bakedOrSrc, keep, p.RecalcNormals,
+                    "Assets/ColliderOptimizer/Editor/4-opt-out",
+                    p.Aggressive, p.Permissive);
             }
             finally
             {
@@ -44,10 +42,10 @@ namespace ColliderOptimizer.UI
             }
             if (!simplified) simplified = MeshOptHelpers.CloneMesh(src);
 
-            if (MeshDefaults.Convex && simplified.triangles != null && simplified.triangles.Length / 3 > 255)
+            if (p.Convex && simplified.triangles != null && simplified.triangles.Length / 3 > 255)
                 Debug.LogWarning("Convex MeshCollider may be auto-reduced (>255 tris)", mc);
 
-            MeshOptHelpers.ApplyMesh(mc, simplified, MeshDefaults);
+            MeshOptHelpers.ApplyMesh(mc, simplified, p);
             EditorUtility.SetDirty(mc);
         }
         [MenuItem("CONTEXT/MeshCollider/Reset Collider", false, K_PRIO + 10)]
@@ -55,11 +53,11 @@ namespace ColliderOptimizer.UI
         {
             var mc = (MeshCollider)__cmd.context;
             var mf = mc.GetComponent<MeshFilter>();
-            var src = mf && mf.sharedMesh ? mf.sharedMesh : mc.sharedMesh;
-            if (!src) { Debug.LogWarning("No authoring mesh found."); return; }
-
+            var src = (mf && mf.sharedMesh) ? mf.sharedMesh : mc.sharedMesh;
+            if (!src) { Debug.LogWarning("no authoring mesh found"); return; }
+            var p = OptSettings.MeshParams;
             Undo.RecordObject(mc, "Reset MeshCollider");
-            MeshOptHelpers.ResetMeshTo(mc, src, MeshDefaults);
+            MeshOptHelpers.ResetMesh(mc, src, p);
             EditorUtility.SetDirty(mc);
         }
         [MenuItem("CONTEXT/MeshCollider/Save Collider", false, K_PRIO + 20)]
@@ -67,11 +65,9 @@ namespace ColliderOptimizer.UI
         {
             var mc = (MeshCollider)__cmd.context;
             var mesh = mc.sharedMesh;
-            if (!mesh) { Debug.LogWarning("No collider mesh to save."); return; }
-
+            if (!mesh) { Debug.LogWarning("no collider mesh to save"); return; }
             var path = EditorUtility.SaveFilePanelInProject("Save Collider Mesh", mc.name + "_CollMesh", "asset", "Pick a location");
             if (string.IsNullOrEmpty(path)) return;
-
             var clone = Object.Instantiate(mesh);
             AssetDatabase.CreateAsset(clone, path);
             AssetDatabase.SaveAssets();
@@ -81,11 +77,11 @@ namespace ColliderOptimizer.UI
         static void Load(MenuCommand __cmd)
         {
             var mc = (MeshCollider)__cmd.context;
-            var picked = ColliderOptEditorUtils.LoadAssetViaPanel<Mesh>("Pick Mesh asset", "asset");
+            var picked = OptEditorHelpers.LoadAssetViaPanel<Mesh>("Pick Mesh asset", "asset");
             if (!picked) return;
-
+            var p = OptSettings.MeshParams;
             Undo.RecordObject(mc, "Load Saved MeshCollider");
-            MeshOptHelpers.ApplyMesh(mc, picked, MeshDefaults);
+            MeshOptHelpers.ApplyMesh(mc, picked, p);
             EditorUtility.SetDirty(mc);
         }
     }

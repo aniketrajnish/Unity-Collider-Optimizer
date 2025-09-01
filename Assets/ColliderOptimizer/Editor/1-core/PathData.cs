@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ColliderOptimizer.Utils
+namespace ColliderOptimizer.Core
 { 
     [System.Serializable]
     public class Path2D { public Vector2[] Pts; }

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 53
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122090fb7231e05459388c203f4c92f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshParams:
+    ContractionFactor: 0.25
+    RecalcNormals: 1
+    BakeScale: 1
+    Convex: 0
+    LossyScale: {x: 1, y: 1, z: 1}
+    Aggressive: 0
+    Permissive: 0
+  polyParams:
+    Mode: 0
+    Tolerance: 0.77
+    PerPathScaleByBounds: 0
+  activeMeshPreset: {fileID: 0}
+  activePolyPreset: {fileID: 11400000, guid: 2efb350bc73136b40963bcaa091ca8a5, type: 2}
