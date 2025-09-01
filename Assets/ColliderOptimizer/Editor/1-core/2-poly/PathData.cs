@@ -10,7 +10,7 @@ namespace ColliderOptimizer.Core.P
     [CreateAssetMenu(menuName = "ColliderOptimizer/Path Data")]
     public class PathData : ScriptableObject
     {
-        [SerializeField] public List<Path2D> Paths = new();
+        public List<Path2D> Paths = new();
     }
 }
 #endif
