@@ -9,8 +9,11 @@ namespace ColliderOptimizer.Gltfpack
 {
     public static class MeshSimplifyGateway
     {
-        public static Mesh SimplifyWithGltfpack(Mesh __src, float __keepRatio, bool __recalcNormals,
-                                                string __saveDir = "Assets/ColliderOptimizer/Editor/4-opt-out")
+        public static Mesh SimplifyWithGltfpack(
+            Mesh __src, float __keepRatio, bool __recalcNormals,
+            string __saveDir = "Assets/ColliderOptimizer/Editor/4-opt-out",
+            bool __aggressive = false, bool __permissive = false
+        )
         {
             if (!__src) return null;
             __keepRatio = Mathf.Clamp01(__keepRatio);
@@ -19,13 +22,13 @@ namespace ColliderOptimizer.Gltfpack
             Directory.CreateDirectory(tempDir);
             string baseName = (string.IsNullOrEmpty(__src.name) ? "Mesh" : __src.name).Replace(' ', '_');
             string objPath = Path.Combine(tempDir, baseName + ".obj");
-            string glbPath = Path.Combine(tempDir, baseName + "_simp.glb");
+            string glbPath = Path.Combine(tempDir, baseName + "-simp.glb");
             ObjExporter.WriteOBJ(__src, objPath);
 
-            if (!GltfpackRunner.Run(objPath, glbPath, __keepRatio)) return null;
+            if (!GltfpackRunner.Run(objPath, glbPath, __keepRatio, __aggressive, __permissive)) return null;
 
             Directory.CreateDirectory(__saveDir);
-            string projGlb = Path.Combine(__saveDir, baseName + "_simp.glb");
+            string projGlb = Path.Combine(__saveDir, baseName + "-simp.glb");
             File.Copy(glbPath, projGlb, true);
             AssetDatabase.ImportAsset(projGlb, ImportAssetOptions.ForceSynchronousImport);
 
@@ -54,9 +57,9 @@ namespace ColliderOptimizer.Gltfpack
             baked.RecalculateBounds();
             baked.indexFormat = (baked.vertexCount > 65535) ? IndexFormat.UInt32 : IndexFormat.UInt16;
 
-            string meshPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(__saveDir, baseName + "_Simplified.asset"));
+            string meshPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(__saveDir, baseName + "-simp.asset"));
             var meshCopy = Object.Instantiate(baked);
-            meshCopy.name = baseName + "_Simplified";
+            meshCopy.name = baseName + "-simp";
             AssetDatabase.CreateAsset(meshCopy, meshPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

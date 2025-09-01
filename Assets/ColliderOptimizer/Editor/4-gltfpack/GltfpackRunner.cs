@@ -48,12 +48,12 @@ namespace ColliderOptimizer.Gltfpack
         }
 #endif
 
-        public static bool Run(string inPath, string outPath, float keepRatio, bool aggressive = false, bool permissive = false)
+        public static bool Run(string __inPath, string __outPath, float __keepRatio, bool __aggressive = false, bool __permissive = false)
         {
             string exe = FindBinary();
-            string args = $"-i \"{inPath}\" -o \"{outPath}\" -si {Mathf.Clamp01(keepRatio):0.###}";
-            if (aggressive) args += " -sa";
-            if (permissive) args += " -sp";
+            string args = $"-i \"{__inPath}\" -o \"{__outPath}\" -si {Mathf.Clamp01(__keepRatio):0.###}";
+            if (__aggressive) args += " -sa";
+            if (__permissive) args += " -sp";
             if (TryRunOnce(exe, args, out int code, out string err)) return true;
 
 #if UNITY_EDITOR_OSX
@@ -70,9 +70,9 @@ namespace ColliderOptimizer.Gltfpack
             return false;
         }
 
-        static bool TryRunOnce(string exe, string args, out int exitCode, out string stderr)
+        static bool TryRunOnce(string __exe, string __args, out int __exitCode, out string __stderr)
         {
-            var psi = new ProcessStartInfo(exe, args)
+            var psi = new ProcessStartInfo(__exe, __args)
             {
                 UseShellExecute = false,
                 CreateNoWindow = true,
@@ -84,14 +84,14 @@ namespace ColliderOptimizer.Gltfpack
             {
                 using var p = Process.Start(psi);
                 p.WaitForExit();
-                exitCode = p.ExitCode;
-                stderr = p.StandardError.ReadToEnd();
-                return exitCode == 0;
+                __exitCode = p.ExitCode;
+                __stderr = p.StandardError.ReadToEnd();
+                return __exitCode == 0;
             }
             catch (Exception e)
             {
-                exitCode = -1;
-                stderr = e.ToString();
+                __exitCode = -1;
+                __stderr = e.ToString();
                 return false;
             }
         }

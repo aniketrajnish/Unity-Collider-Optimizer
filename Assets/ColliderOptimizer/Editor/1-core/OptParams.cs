@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
 using UnityEngine;
 
-namespace ColliderOptimizer.Utils
+namespace ColliderOptimizer.Core
 {
     public enum ToleranceMode { World, Relative }
     [System.Serializable]
@@ -15,7 +15,6 @@ namespace ColliderOptimizer.Utils
         public bool Aggressive = false;
         public bool Permissive = false;
     }
-
     [System.Serializable]
     public class PolyOptParams
     {
