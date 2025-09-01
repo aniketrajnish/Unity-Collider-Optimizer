@@ -1,5 +1,7 @@
 #if UNITY_EDITOR
 using ColliderOptimizer.Core;
+using ColliderOptimizer.Core.M;
+using ColliderOptimizer.Core.P;
 using UnityEditor;
 using UnityEngine;
 

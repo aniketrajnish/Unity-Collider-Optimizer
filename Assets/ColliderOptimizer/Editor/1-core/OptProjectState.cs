@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine;
+using ColliderOptimizer.Core.M;
+using ColliderOptimizer.Core.P;
 
 namespace ColliderOptimizer.Core
 {
