@@ -26,10 +26,8 @@ public class OptWindow : EditorWindow
         _tab = EditorPrefs.GetInt(K_TABKEY, 0);
         _meshNerd = EditorPrefs.GetBool(K_MESHNERDKEY, false);
         _polyNerd = EditorPrefs.GetBool(K_POLYNERDKEY, false);
-
         _meshPreset = OptSettings.GetActiveMeshPreset();
         _polyPreset = OptSettings.GetActivePolyPreset();
-
         ApplyIcon();
     }
     void ApplyIcon()
@@ -59,8 +57,6 @@ public class OptWindow : EditorWindow
         var mp = (_meshPreset ? _meshPreset.Params : state.MeshParams);
 
         EditorGUILayout.Space(6);
-        GUILayout.Label("Params", EditorStyles.boldLabel);
-
         EditorGUI.BeginChangeCheck();
         mp.ContractionFactor = EditorGUILayout.Slider("Contraction", mp.ContractionFactor, 0f, 1f);
 
@@ -79,15 +75,20 @@ public class OptWindow : EditorWindow
             {
                 if (GUILayout.Button("Use Selected Transform Scale") && Selection.activeTransform)
                     mp.LossyScale = Selection.activeTransform.lossyScale;
-                if (GUILayout.Button("Clear Override"))
-                    mp.LossyScale = Vector3.one;
+                GUILayout.FlexibleSpace();
             }
             EditorGUI.indentLevel--;
+        }
+        if (GUILayout.Button("Reset to Defaults", GUILayout.MaxWidth(120)))
+        {
+            mp.ResetToDefaults();
+            if (_meshPreset) EditorUtility.SetDirty(_meshPreset);
+            else OptProjectState.instance.SaveProjectSettings(true);
         }
         if (EditorGUI.EndChangeCheck())
         {
             if (_meshPreset) EditorUtility.SetDirty(_meshPreset);
-            else OptProjectState.instance.SaveProjectSettings(true);
+            else state.SaveProjectSettings(true);
         }
         EditorPrefs.SetBool(K_MESHNERDKEY, _meshNerd);
     }
@@ -96,16 +97,12 @@ public class OptWindow : EditorWindow
         EditorGUI.BeginChangeCheck();
         _polyPreset = (PolyOptPreset)EditorGUILayout.ObjectField("Preset", _polyPreset, typeof(PolyOptPreset), false);
         if (EditorGUI.EndChangeCheck())
-        {
             OptSettings.SetActivePolyPreset(_polyPreset);
-        }
 
         var state = OptProjectState.instance;
         var pp = (_polyPreset ? _polyPreset.Params : state.PolyParams);
 
         EditorGUILayout.Space(6);
-        GUILayout.Label("Params", EditorStyles.boldLabel);
-
         EditorGUI.BeginChangeCheck();
         pp.Tolerance = EditorGUILayout.FloatField("Tolerance", pp.Tolerance);
 
@@ -117,10 +114,16 @@ public class OptWindow : EditorWindow
             pp.PerPathScaleByBounds = EditorGUILayout.Toggle("Scale By Bounds", pp.PerPathScaleByBounds);
             EditorGUI.indentLevel--;
         }
+        if (GUILayout.Button("Reset to Defaults", GUILayout.MaxWidth(120)))
+        {
+            pp.ResetToDefaults();
+            if (_polyPreset) EditorUtility.SetDirty(_polyPreset);
+            else OptProjectState.instance.SaveProjectSettings(true);
+        }
         if (EditorGUI.EndChangeCheck())
         {
             if (_polyPreset) EditorUtility.SetDirty(_polyPreset);
-            else OptProjectState.instance.SaveProjectSettings(true);
+            else state.SaveProjectSettings(true);
         }
         EditorPrefs.SetBool(K_POLYNERDKEY, _polyNerd);
     }
