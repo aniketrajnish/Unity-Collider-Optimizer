@@ -21,23 +21,31 @@ namespace ColliderOptimizer.Core.M
 
             float keep = 1f - Mathf.Clamp01(p.ContractionFactor);
             var chosenScale = (p.LossyScale != Vector3.one) ? p.LossyScale : go.transform.lossyScale;
-            var bakedOrSrc = (p.BakeScale && chosenScale != Vector3.one)
-                ? MeshOptHelpers.BakeScaledCopy(src, chosenScale)
-                : src;
+
+            bool baked = p.BakeScale && chosenScale != Vector3.one;
+            Mesh exportMesh = baked ? MeshOptHelpers.ScaleCopy(src, chosenScale) : src;
 
             Mesh simplified = null;
             try
             {
                 simplified = MeshSimplifyGateway.SimplifyWithGltfpack(
-                    bakedOrSrc, keep, p.RecalcNormals,
+                    exportMesh, keep, p.RecalcNormals,
                     "Assets/ColliderOptimizer/Editor/4-opt-out",
                     p.Aggressive, p.Permissive);
             }
             finally
             {
-                if (!ReferenceEquals(bakedOrSrc, src)) Object.DestroyImmediate(bakedOrSrc);
+                if (!ReferenceEquals(exportMesh, src)) Object.DestroyImmediate(exportMesh);
             }
             if (!simplified) simplified = MeshOptHelpers.CloneMesh(src);
+
+            if (baked)
+            {
+                var inv = MeshOptHelpers.SafeInverse(chosenScale);
+                var unbaked = MeshOptHelpers.ScaleCopy(simplified, inv);
+                MeshOptHelpers.SafeDestroyRuntime(simplified);
+                simplified = unbaked;
+            }
 
             if (p.Convex && simplified.triangles != null && simplified.triangles.Length / 3 > 255)
                 Debug.LogWarning("Convex MeshCollider may be auto-reduced (>255 tris)", __mc);
@@ -45,6 +53,7 @@ namespace ColliderOptimizer.Core.M
             MeshOptHelpers.ApplyMesh(__mc, simplified, p);
             EditorUtility.SetDirty(__mc);
         }
+
         public void Reset(MeshCollider __mc)
         {
             var mf = __mc.GetComponent<MeshFilter>();

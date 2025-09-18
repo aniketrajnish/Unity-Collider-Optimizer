@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace ColliderOptimizer.Utils
 {
-    public static class DPR
+    public static class RDP
     {
-        public static List<Vector2> DPRPts(List<Vector2> __pts, float __tol)
+        public static List<Vector2> RDPPts(List<Vector2> __pts, float __tol)
         {
             if (__pts == null || __pts.Count < 3) return __pts;
             int first = 0, last = __pts.Count - 1;
