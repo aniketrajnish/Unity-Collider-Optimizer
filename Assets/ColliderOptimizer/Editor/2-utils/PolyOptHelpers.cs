@@ -61,7 +61,7 @@ namespace ColliderOptimizer.Utils
                 {
                     var bb = Bounds2D(path); tol *= (bb.max - bb.min).magnitude;
                 }
-                result.Add(DPR.DPRPts(path, tol));
+                result.Add(RDP.RDPPts(path, tol));
             }
             return result;
         }
