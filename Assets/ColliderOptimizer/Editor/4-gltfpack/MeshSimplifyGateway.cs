@@ -4,17 +4,16 @@ using System.IO;
 using ColliderOptimizer.Utils;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace ColliderOptimizer.Gltfpack
 {
     public static class MeshSimplifyGateway
     {
         public static Mesh SimplifyWithGltfpack(
-            Mesh __src, float __keepRatio, bool __recalcNormals,
-            string __saveDir = "Assets/ColliderOptimizer/Editor/4-opt-out",
-            bool __aggressive = false, bool __permissive = false
-        )
+           Mesh __src, float __keepRatio, bool __recalcNormals,
+           string __saveDir = "Assets/ColliderOptimizer/Editor/4-opt-out",
+           bool __aggressive = false, bool __permissive = false
+       )
         {
             if (!__src) return null;
             __keepRatio = Mathf.Clamp01(__keepRatio);
@@ -38,46 +37,84 @@ namespace ColliderOptimizer.Gltfpack
                 string projGlb = Path.Combine(__saveDir, baseName + "-simp.glb");
                 File.Copy(glbPath, projGlb, true);
 
-                AssetDatabase.ImportAsset(RelativizeToProject(projGlb),
-                    ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
+                var relGlb = RelativizeToProject(projGlb);
+
+                var importerType = AssetDatabase.GetImporterType(relGlb);
+                if (importerType == null) return null;
+
+                AssetDatabase.ImportAsset(relGlb,
+                    ImportAssetOptions.ForceSynchronousImport |
+                    ImportAssetOptions.ImportRecursive |
+                    ImportAssetOptions.ForceUpdate);
 
                 Mesh baked = null;
-                var assets = AssetDatabase.LoadAllAssetsAtPath(RelativizeToProject(projGlb));
-                foreach (var a in assets) { if (a is Mesh m) { baked = m; break; } }
+                bool usedCombinedBuilder = false;
+                Matrix4x4 childRelMtx = Matrix4x4.identity;
 
-                if (!baked)
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(relGlb);
+                if (prefab)
                 {
-                    var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(RelativizeToProject(projGlb));
-                    if (prefab)
+                    var go = UnityEngine.Object.Instantiate(prefab);
+                    try
                     {
-                        var go = UnityEngine.Object.Instantiate(prefab);
-                        try
+                        baked = MeshOptHelpers.CombineMeshesFromPrefabHierarchy(go);
+                        usedCombinedBuilder = baked != null;
+
+                        if (!baked)
                         {
-                            var mf = go.GetComponentInChildren<MeshFilter>();
-                            if (mf && mf.sharedMesh) baked = mf.sharedMesh;
-                            if (!baked)
+                            var mf = go.GetComponentInChildren<MeshFilter>(true);
+                            if (mf && mf.sharedMesh)
                             {
-                                var sk = go.GetComponentInChildren<SkinnedMeshRenderer>();
-                                if (sk && sk.sharedMesh) baked = sk.sharedMesh;
+                                baked = mf.sharedMesh;
+                                childRelMtx = mf.transform.localToWorldMatrix;
+                            }
+                            else
+                            {
+                                var sk = go.GetComponentInChildren<SkinnedMeshRenderer>(true);
+                                if (sk && sk.sharedMesh)
+                                {
+                                    baked = sk.sharedMesh;
+                                    childRelMtx = sk.transform.localToWorldMatrix;
+                                }
                             }
                         }
-                        finally
-                        {
-                            UnityEngine.Object.DestroyImmediate(go);
-                        }
+                    }
+                    finally
+                    {
+                        UnityEngine.Object.DestroyImmediate(go);
+                    }
+                }
+                else
+                {
+                    var assets = AssetDatabase.LoadAllAssetsAtPath(relGlb);
+                    baked = MeshOptHelpers.CombineMeshesFromAssets(assets);
+                    usedCombinedBuilder = baked != null;
+
+                    if (!baked)
+                    {
+                        foreach (var a in assets) { if (a is Mesh m) { baked = m; break; } }
+                        childRelMtx = Matrix4x4.identity;
                     }
                 }
 
-                if (!baked)
-                {
-                    Debug.LogError("ensure a GLTF/GLB importer is installed (com.unity.cloud.gltfast)");
-                    return null;
-                }
+                if (!baked) return null;
 
                 string meshPath = AssetDatabase.GenerateUniqueAssetPath(
                     Path.Combine(__saveDir, baseName + "-simp.asset"));
-                var meshCopy = UnityEngine.Object.Instantiate(baked);
-                meshCopy.name = baseName + "-simp";
+
+                Mesh meshCopy;
+                if (usedCombinedBuilder)
+                {
+                    meshCopy = baked;
+                    meshCopy.name = baseName + "-simp";
+                }
+                else
+                {
+                    meshCopy = UnityEngine.Object.Instantiate(baked);
+                    meshCopy.name = baseName + "-simp";
+                    MeshOptHelpers.BakeTRSIntoMesh(meshCopy, childRelMtx);
+                    if (childRelMtx.determinant < 0f) MeshOptHelpers.FlipWindingAllSubmeshes(meshCopy);
+                }
 
                 if (__recalcNormals) meshCopy.RecalculateNormals();
                 meshCopy.RecalculateBounds();
@@ -95,11 +132,11 @@ namespace ColliderOptimizer.Gltfpack
                 SafeDeleteDirIfEmpty(tempDir);
             }
         }
-        static string SanitizeFileName(string name)
+        static string SanitizeFileName(string __name)
         {
             foreach (var c in Path.GetInvalidFileNameChars())
-                name = name.Replace(c, '_');
-            return name.Replace(' ', '_');
+                __name = __name.Replace(c, '_');
+            return __name.Replace(' ', '_');
         }
         static string RelativizeToProject(string __path)
         {
