@@ -24,7 +24,7 @@ namespace ColliderOptimizer.Core.M
 
             Mesh simplified = MeshSimplifyGateway.SimplifyWithGltfpack(
                 src, keep, p.RecalcNormals,
-                "Assets/ColliderOptimizer/Editor/4-opt-out",
+                "Assets/ColliderOptimizer/Editor/5-opt-out",
                 p.Aggressive, p.Permissive);
 
             if (!simplified) simplified = MeshOptHelpers.CloneMesh(src);
