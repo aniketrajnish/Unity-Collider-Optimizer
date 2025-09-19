@@ -1,7 +1,7 @@
 # Unity Collider Optimizer
 
 > [!IMPORTANT]
-> There's an update to the package that includes a refactor to the architecture + using [meshoptimizer](https://meshoptimizer.org/) for more reliable & faster mesh decimation, will update the `README` to reflect the same & new workflow
+> **[09/18/2025]** There's an update to the package that includes a refactor to the architecture + using [meshoptimizer](https://meshoptimizer.org/) for more reliable & faster mesh decimation, will update the `README` to reflect the same & new workflow
 
 Optimizes Mesh & Polygon colliders in Unity.
 
