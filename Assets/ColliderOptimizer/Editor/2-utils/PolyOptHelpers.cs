@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine;
-using ColliderOptimizer.Core;
+using ColliderOptimizer.Core.P;
 
 namespace ColliderOptimizer.Utils
 {
