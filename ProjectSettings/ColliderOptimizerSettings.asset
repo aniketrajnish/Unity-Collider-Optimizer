@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MeshParams:
-    ContractionFactor: 0.684
-    RecalcNormals: 1
+    ContractionFactor: 0.69
+    RecalcNormals: 0
     Convex: 0
     Aggressive: 1
     Permissive: 0
   PolyParams:
     Mode: 0
-    Tolerance: 0.01
+    Tolerance: 0.069
     PerPathScaleByBounds: 0
   ActiveMeshPreset: {fileID: 0}
   ActivePolyPreset: {fileID: 0}
