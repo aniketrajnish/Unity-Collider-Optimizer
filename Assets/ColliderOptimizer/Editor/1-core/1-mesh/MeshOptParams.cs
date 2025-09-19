@@ -6,7 +6,7 @@ namespace ColliderOptimizer.Core.M
     [System.Serializable]
     public class MeshOptParams
     {
-        [Range(0f, 1f)] public float ContractionFactor = .25f;
+        [Range(0f, 1f)] public float ContractionFactor = .69f;
         public bool RecalcNormals = true;
         public bool Convex = false;
         public bool Aggressive = true;

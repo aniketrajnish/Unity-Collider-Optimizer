@@ -11,7 +11,7 @@ namespace ColliderOptimizer.Gltfpack
     {
         public static Mesh SimplifyWithGltfpack(
            Mesh __src, float __keepRatio, bool __recalcNormals,
-           string __saveDir = "Assets/ColliderOptimizer/Editor/4-opt-out",
+           string __saveDir = "Assets/ColliderOptimizer/Editor/5-opt-out",
            bool __aggressive = false, bool __permissive = false
        )
         {
@@ -39,19 +39,38 @@ namespace ColliderOptimizer.Gltfpack
 
                 var relGlb = RelativizeToProject(projGlb);
 
-                var importerType = AssetDatabase.GetImporterType(relGlb);
-                if (importerType == null) return null;
-
                 AssetDatabase.ImportAsset(relGlb,
                     ImportAssetOptions.ForceSynchronousImport |
                     ImportAssetOptions.ImportRecursive |
                     ImportAssetOptions.ForceUpdate);
 
+                GameObject prefab = null;
+                UnityEngine.Object[] allAssets = null;
+                for (int tries = 0; tries < 69; tries++)
+                {
+                    prefab = AssetDatabase.LoadAssetAtPath<GameObject>(relGlb);
+                    allAssets = AssetDatabase.LoadAllAssetsAtPath(relGlb);
+
+                    if (prefab != null || (allAssets != null && allAssets.Length > 0))
+                        break;
+
+                    System.Threading.Thread.Sleep(15);
+
+                    AssetDatabase.ImportAsset(relGlb, ImportAssetOptions.ForceUpdate);
+                }
+
+                if (prefab == null && (allAssets == null || allAssets.Length == 0))
+                {
+                    Debug.LogError(
+                        "glb import produced no loadable assets: " + relGlb +
+                        "\nmake sure a glb importer (e.g: com.unity.formats.glTF) is installed");
+                    return null;
+                }
+
                 Mesh baked = null;
                 bool usedCombinedBuilder = false;
                 Matrix4x4 childRelMtx = Matrix4x4.identity;
 
-                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(relGlb);
                 if (prefab)
                 {
                     var go = UnityEngine.Object.Instantiate(prefab);
@@ -86,7 +105,7 @@ namespace ColliderOptimizer.Gltfpack
                 }
                 else
                 {
-                    var assets = AssetDatabase.LoadAllAssetsAtPath(relGlb);
+                    var assets = allAssets ?? AssetDatabase.LoadAllAssetsAtPath(relGlb);
                     baked = MeshOptHelpers.CombineMeshesFromAssets(assets);
                     usedCombinedBuilder = baked != null;
 

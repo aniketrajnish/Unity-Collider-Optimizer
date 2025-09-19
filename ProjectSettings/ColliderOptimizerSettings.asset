@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MeshParams:
-    ContractionFactor: 0.256
+    ContractionFactor: 0.684
     RecalcNormals: 1
     Convex: 0
-    Aggressive: 0
+    Aggressive: 1
     Permissive: 0
   PolyParams:
     Mode: 0
