@@ -46,23 +46,27 @@ namespace ColliderOptimizer.Utils
         public static List<List<Vector2>> SimplifyPolys(List<List<Vector2>> __src, PolyOptParams __p)
         {
             var result = new List<List<Vector2>>(__src.Count);
+
             for (int i = 0; i < __src.Count; i++)
             {
                 var path = __src[i];
                 if (path == null || path.Count < 3) { result.Add(path); continue; }
 
-                float tol = __p.Tolerance;
+                float tol = Mathf.Max(0f, __p.Tolerance);
+                var bb = Bounds2D(path);
+                float diag = (bb.max - bb.min).magnitude;
+
                 if (__p.Mode == ToleranceMode.Relative)
-                {
-                    var bb = Bounds2D(path); var diag = (bb.max - bb.min).magnitude;
-                    tol = diag * __p.Tolerance;
-                }
-                if (__p.PerPathScaleByBounds)
-                {
-                    var bb = Bounds2D(path); tol *= (bb.max - bb.min).magnitude;
-                }
+                    tol = diag * tol;
+
+                if (__p.PerPathScaleByBounds && __p.Mode == ToleranceMode.World)
+                    tol *= diag;
+
+                if (tol <= Mathf.Epsilon) { result.Add(path); continue; }
+
                 result.Add(RDP.RDPPts(path, tol));
             }
+
             return result;
         }
     }

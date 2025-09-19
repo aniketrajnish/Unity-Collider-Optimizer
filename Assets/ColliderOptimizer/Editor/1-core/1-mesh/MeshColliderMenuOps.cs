@@ -1,3 +1,4 @@
+// c:\Personal Projects\Unity-Collider-Optimizer\Assets\ColliderOptimizer\Editor\1-core\1-mesh\MeshColliderMenuOps.cs
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
@@ -35,7 +36,7 @@ namespace ColliderOptimizer.Core.M
             }
             finally
             {
-                if (!ReferenceEquals(exportMesh, src)) Object.DestroyImmediate(exportMesh);
+                if (!ReferenceEquals(exportMesh, src)) MeshOptHelpers.SafeDestroyRuntime(exportMesh);
             }
             if (!simplified) simplified = MeshOptHelpers.CloneMesh(src);
 
@@ -53,7 +54,6 @@ namespace ColliderOptimizer.Core.M
             MeshOptHelpers.ApplyMesh(__mc, simplified, p);
             EditorUtility.SetDirty(__mc);
         }
-
         public void Reset(MeshCollider __mc)
         {
             var mf = __mc.GetComponent<MeshFilter>();
