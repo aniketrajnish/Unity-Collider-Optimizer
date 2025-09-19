@@ -65,18 +65,9 @@ public class OptWindow : EditorWindow
         {
             EditorGUI.indentLevel++;
             mp.RecalcNormals = EditorGUILayout.Toggle("Recalc Normals", mp.RecalcNormals);
-            mp.BakeScale = EditorGUILayout.Toggle("Bake Scale", mp.BakeScale);
             mp.Convex = EditorGUILayout.Toggle("Convex", mp.Convex);
             mp.Aggressive = EditorGUILayout.Toggle(new GUIContent("Aggressive (-sa)"), mp.Aggressive);
             mp.Permissive = EditorGUILayout.Toggle(new GUIContent("Permissive (-sp)"), mp.Permissive);
-            mp.LossyScale = EditorGUILayout.Vector3Field(new GUIContent("Override Lossy Scale"), mp.LossyScale);
-
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                if (GUILayout.Button("Use Selected Transform Scale") && Selection.activeTransform)
-                    mp.LossyScale = Selection.activeTransform.lossyScale;
-                GUILayout.FlexibleSpace();
-            }
             EditorGUI.indentLevel--;
         }
         if (GUILayout.Button("Reset to Defaults", GUILayout.MaxWidth(120)))
