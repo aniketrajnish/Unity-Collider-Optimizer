@@ -8,7 +8,7 @@ namespace ColliderOptimizer.Core.P
     public class PolyOptParams
     {
         public ToleranceMode Mode = ToleranceMode.World;
-        public float Tolerance = .01f;
+        public float Tolerance = .069f;
         public bool PerPathScaleByBounds = false;
 
         public void CopyFrom(PolyOptParams __other)

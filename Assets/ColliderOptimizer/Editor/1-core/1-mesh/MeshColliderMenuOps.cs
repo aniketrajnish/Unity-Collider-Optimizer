@@ -1,4 +1,3 @@
-// c:\Personal Projects\Unity-Collider-Optimizer\Assets\ColliderOptimizer\Editor\1-core\1-mesh\MeshColliderMenuOps.cs
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
