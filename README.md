@@ -5,7 +5,7 @@ This package is meant for:
     | ![MCO_V1](https://github.com/user-attachments/assets/a2cb0aa8-543a-437c-9daa-572fa1ec1b18) | ![MCO_V2](https://github.com/user-attachments/assets/8fc2e9a5-cdb0-4513-b391-27f570a95023) | ![MCO_V3](https://github.com/user-attachments/assets/4004e1d4-38e8-49ce-8fac-a95f6e686dcc) |
     |:---:|:---:|:---:|
     | Original Mesh | Unity Mesh Collider | Optimized Mesh Collider |
-    |**Triangles Count**| *3032 tris, 2512 verts* | *918 tris, 592 verts* |
+    |**Tris, Verts Count**| *3032 tris, 2512 verts* | *918 tris, 592 verts* |
 
     
 - `PolygonCollider2D` optimization (2D) using RDP line simplification
