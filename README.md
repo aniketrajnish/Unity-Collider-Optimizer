@@ -61,6 +61,8 @@ This package is meant for:
 - Without an active preset the settings are stored in `Project Settings` at `ProjectSettings/ColliderOptimizerSettings.asset`
 - `Reset to Defaults` will update the preset (if assigned) or the project settings to the default values
 
+https://github.com/user-attachments/assets/9530f417-eb80-4108-ab7c-36454a7a409c
+
 ## Performance Comparison
 
 https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/e134f0c6-4c08-4552-b69f-22e7f3b61ebe
