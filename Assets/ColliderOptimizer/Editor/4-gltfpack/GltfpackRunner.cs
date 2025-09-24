@@ -26,30 +26,32 @@ namespace ColliderOptimizer.Gltfpack
                         : (File.Exists(Path.GetFullPath(x64)) ? x64 : arm);
             string full = Path.GetFullPath(rel);
             if (!File.Exists(full)) throw new FileNotFoundException("gltfpack not found at: " + full);
-            TryChmodX(full);
+            EnsureExecutableAndUnquarantined(full);
             return full;
 #else
             string rel = "Assets/ColliderOptimizer/Editor/4-gltfpack/1-bin/3-linux/gltfpack";
             string full = Path.GetFullPath(rel);
             if (!File.Exists(full)) throw new FileNotFoundException("gltfpack not found at: " + full);
-            TryChmodX(full);
+            EnsureExecutable(full);
             return full;
 #endif
         }
 
 #if UNITY_EDITOR_OSX || UNITY_EDITOR_LINUX
-        static void TryChmodX(string full)
+        static void EnsureExecutable(string full)
         {
-            try
-            {
-                using var p = new Process();
-                p.StartInfo = new ProcessStartInfo("chmod", $"+x \"{full}\"") { UseShellExecute = false };
-                p.Start();
-                p.WaitForExit();
-            }
-            catch { }
+            try { RunTool("/bin/chmod", $"+x \"{full}\""); } catch { }
         }
 #endif
+
+#if UNITY_EDITOR_OSX
+        static void EnsureExecutableAndUnquarantined(string full)
+        {
+            EnsureExecutable(full);
+            try { RunTool("/usr/bin/xattr", $"-dr com.apple.quarantine \"{full}\""); } catch { }
+        }
+#endif
+
         public static bool Run(string __inPath, string __outPath, float __keepRatio, bool __aggressive = false, bool __permissive = false)
         {
             string exe = FindBinary();
@@ -64,19 +66,19 @@ namespace ColliderOptimizer.Gltfpack
             if (TryRunOnce(exe, args, out int code, out string err)) return true;
 
 #if UNITY_EDITOR_OSX
-            // Try the other mac architecture if present
             string alt = exe.Contains("/1-arm64/")
                         ? exe.Replace("/1-arm64/", "/2-x86_64/")
                         : exe.Replace("/2-x86_64/", "/1-arm64/");
             if (!Path.GetFullPath(alt).Equals(Path.GetFullPath(exe)) && File.Exists(alt))
             {
-                TryChmodX(alt);
+                EnsureExecutableAndUnquarantined(alt);
                 if (TryRunOnce(alt, args, out code, out err)) return true;
             }
 #endif
             UnityEngine.Debug.LogError($"gltfpack failed.\nexe: {exe}\nargs: {args}\n(exit {code})\n{err}");
             return false;
         }
+
         static bool TryRunOnce(string __exe, string __args, out int __exitCode, out string __stderr)
         {
             var psi = new ProcessStartInfo(__exe, __args)
@@ -102,6 +104,26 @@ namespace ColliderOptimizer.Gltfpack
                 return false;
             }
         }
+
+#if UNITY_EDITOR_OSX || UNITY_EDITOR_LINUX
+        static void RunTool(string __fileName, string __args)
+        {
+            var p = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = __fileName,
+                    Arguments = __args,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                }
+            };
+            p.Start();
+            p.WaitForExit();
+        }
+#endif
     }
 }
 #endif
