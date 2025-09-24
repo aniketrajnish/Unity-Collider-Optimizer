@@ -30,10 +30,8 @@ This package is meant for:
 ## Usage
 
 #### Install
-* Download the `collider-opt-pkg-v005.unitypackage` package from the [Releases](https://github.com/aniketrajnish/Unity-Collider-Optimizer/releases/tag/005) section and import in your Unity project
-- In Package Manager, install one of:
-  - glTFast (`com.unity.cloud.gltfast`) -> **recommended**
-  - UnityGLTF (`com.unity.formats.glTF`)
+- Download the `collider-opt-pkg-v005.unitypackage` package from the [Releases](https://github.com/aniketrajnish/Unity-Collider-Optimizer/releases/tag/005) section and import in your Unity project
+- Follow the prompt to install the glTF/GLB importer
 - (macOS/Linux) If the `gltfpack` binary isn’t executable, the tool will attempt to `chmod +x` automatically
 
 #### Optimize Colliders
@@ -73,7 +71,7 @@ https://github.com/aniketrajnish/Unity-Collider-Optimizer/assets/58925008/cfba78
 - For skinned meshes, the tool bakes a static combined mesh for collider usage (as intended for physics), not skinning, anyways I won't use a `MeshCollider` for a skinned mesh
 - Extremely degenerate or non-triangular topologies are skipped
 - `glb import produced no loadable assets` <br>
-    Install a GLB importer package (UnityGLTF or glTFast) & reoptimize
+    Install/reinstall a GLB importer package (UnityGLTF or glTFast) & reoptimize
 - Unity limits convex colliders to ≤255 tris, it may auto-simplify further
 - If you see warnings about very large triangles (>500 units), check your model scale. The tool bakes transforms, but mismatched import scales can still yield oversized geometry
 - The tool attempts to `chmod +x` the `gltfpack` binary, if gatekeeper still blocks it, allow it in System Settings or remove quarantine attributes manually
